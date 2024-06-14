@@ -2,6 +2,7 @@ import {
   createContext,
   FC,
   MouseEvent,
+  MutableRefObject,
   ReactNode,
   useContext,
   useState,
@@ -19,7 +20,7 @@ interface IPosition {
 interface IStyledListProps {
   children: ReactNode;
   position: IPosition;
-  ref: HTMLDivElement | null;
+  ref: MutableRefObject<HTMLElement | null>;
 }
 
 interface IStyledMenusProsp {
@@ -207,7 +208,9 @@ const Button: FC<IButtonProps> = ({
 
   const { close } = context;
 
-  function handleClick() {
+  function handleClick(e: MouseEvent) {
+    e.stopPropagation();
+
     onClick?.();
     close();
   }

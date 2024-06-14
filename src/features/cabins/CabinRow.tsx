@@ -1,8 +1,7 @@
-import { FC, ReactNode, useContext } from "react";
+import { FC, ReactNode } from "react";
 import toast from "react-hot-toast";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
-import Button from "../../ui/Button";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
@@ -12,23 +11,6 @@ import { ICabin } from "../../utils/schemas";
 import CreateCabinForm from "./CreateCabinForm";
 import { useCreateCabin } from "./useCreateCabin";
 import { useDeleteCabin } from "./useDeleteCabin";
-
-// interface ITableRowProps {
-//   children: ReactNode;
-//   role: string;
-// }
-
-// const TableRow: FC<ITableRowProps> = styled.div`
-//   display: grid;
-//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-//   column-gap: 2.4rem;
-//   align-items: center;
-//   padding: 1.4rem 2.4rem;
-
-//   &:not(:last-child) {
-//     border-bottom: 1px solid var(--color-grey-100);
-//   }
-// `;
 
 interface IImgProps {
   src: string;
@@ -135,7 +117,11 @@ const CabinRow: FC<ICabinRowProps> = ({ cabin }) => {
             <Menus.Toggle id={cabinId?.toString() || ""} />
 
             <Menus.List id={cabinId?.toString() || ""}>
-              <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
+              <Menus.Button
+                icon={<HiSquare2Stack />}
+                onClick={handleDuplicate}
+                disabled={isCreating}
+              >
                 Duplicate
               </Menus.Button>
 

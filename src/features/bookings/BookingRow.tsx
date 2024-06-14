@@ -6,8 +6,8 @@ import Table from "../../ui/Table";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
-import { FC, ReactNode, useState } from "react";
-import { IBooking } from "../../utils/schemas";
+import { FC, ReactNode } from "react";
+import { IBooking, StatusType } from "../../utils/schemas";
 import Menus from "../../ui/Menus";
 import {
   HiArrowDownOnSquare,
@@ -18,8 +18,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../check-in-out/useCheckout";
 import { useDeleteBooking } from "./useDeleteBooking";
-import Modal from "../../ui/Modal";
-import ConfirmDelete from "../../ui/ConfirmDelete";
 
 interface ICabinProps {
   children: string;
@@ -64,22 +62,18 @@ interface IBookingRowProps {
 const BookingRow: FC<IBookingRowProps> = ({
   booking: {
     id: bookingId,
-    created_at,
     startDate,
     endDate,
     numNights,
-    numGuests,
     totalPrice,
     status,
-    guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
+    guests,
+    cabins,
   },
 }) => {
   const navigate = useNavigate();
   const { checkout, isCheckingOut } = useCheckout();
   const { removeBooking, isDeleting } = useDeleteBooking();
-
-  const [displayModal, setDisplayModal] = useState<boolean>(false);
 
   const statusToTagName = {
     unconfirmed: "blue",
@@ -97,29 +91,31 @@ const BookingRow: FC<IBookingRowProps> = ({
 
   return (
     <Table.Row>
-      <Cabin>{cabinName}</Cabin>
+      <Cabin>{cabins?.name ?? ""}</Cabin>
 
       <Stacked>
-        <span>{guestName}</span>
-        <span>{email}</span>
+        <span>{guests?.fullName}</span>
+        <span>{guests?.email}</span>
       </Stacked>
 
       <Stacked>
         <span>
-          {isToday(new Date(startDate))
+          {isToday(new Date(Number(startDate)))
             ? "Today"
-            : formatDistanceFromNow(startDate)}{" "}
+            : formatDistanceFromNow(startDate ?? "")}{" "}
           &rarr; {numNights} night stay
         </span>
         <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
-          {format(new Date(endDate), "MMM dd yyyy")}
+          {format(new Date(startDate ?? ""), "MMM dd yyyy")} &mdash;{" "}
+          {format(new Date(endDate ?? ""), "MMM dd yyyy")}
         </span>
       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+      <Tag type={statusToTagName[status as StatusType]}>
+        {(status as StatusType).replace("-", " ")}
+      </Tag>
 
-      <Amount>{formatCurrency(totalPrice)}</Amount>
+      <Amount>{formatCurrency(Number(totalPrice))}</Amount>
 
       <Menus.Menu>
         <Menus.Toggle id={bookingId ? bookingId : ""} />

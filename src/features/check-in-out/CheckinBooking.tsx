@@ -8,8 +8,8 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { FC, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { FC, ReactNode, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useBooking } from "../bookings/useBooking";
 import { useCheckin } from "./useCheckin";
 import Spinner from "../../ui/Spinner";
@@ -17,7 +17,10 @@ import Checkbox from "../../ui/Checkbox";
 import { formatCurrency } from "../../utils/helpers";
 import { useSettings } from "../settings/useSettings";
 
-const Box: FC = styled.div`
+interface IBoxProps {
+  children: ReactNode;
+}
+const Box: FC<IBoxProps> = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
@@ -31,13 +34,10 @@ const CheckinBooking: FC = () => {
 
   const { settings, isLoading: isLoadingSettings } = useSettings();
 
-  const navigate = useNavigate();
-
   const { bookingId } = useParams();
   const moveBack = useMoveBack();
 
   const { booking, isLoading } = useBooking();
-  console.log(booking);
 
   useEffect(() => {
     setConfirmPaid(booking?.isPaid ?? false);

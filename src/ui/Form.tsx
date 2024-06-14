@@ -2,9 +2,9 @@ import { FC, ReactNode } from "react";
 import styled, { css } from "styled-components";
 
 interface IFormProps {
-  type: string;
+  type?: string;
   children: ReactNode;
-  onSubmit: Function;
+  onSubmit?: Function;
 }
 
 const Form: FC<IFormProps> = styled.form`

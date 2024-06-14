@@ -1,8 +1,11 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import styled from "styled-components";
 
 interface IStyledSelectProps {
   type: string;
+  children: ReactNode;
+  value: string;
+  onChange: Function;
 }
 
 const StyledSelect: FC<IStyledSelectProps> = styled.select`

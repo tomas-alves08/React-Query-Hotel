@@ -41,7 +41,6 @@ const TableHeader: FC<ITableHeaderProps> = styled.header`
 
 const CabinTable: FC = () => {
   const { cabins, isLoading } = useCabins();
-  console.log(cabins);
 
   if (isLoading) return <Spinner />;
 

@@ -1,10 +1,5 @@
 import { createContext, FC, ReactNode, useContext } from "react";
 import styled from "styled-components";
-import { ICabin } from "../utils/schemas";
-
-interface ICommonRowProps {
-  columns: string;
-}
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -15,6 +10,9 @@ const StyledTable = styled.div`
   overflow: hidden;
 `;
 
+interface ICommonRowProps {
+  columns: string;
+}
 const CommonRow: FC<ICommonRowProps> = styled.div`
   display: grid;
   grid-template-columns: ${(props) => props.columns};
@@ -46,7 +44,7 @@ const StyledBody = styled.section`
   margin: 0.4rem 0;
 `;
 
-const Footer = styled.footer`
+const StyledFooter = styled.footer`
   background-color: var(--color-grey-50);
   display: flex;
   justify-content: center;
@@ -79,7 +77,7 @@ const Table: FC<ITableProps> & {
   Header: FC<IHeaderProps>;
   Row: FC<IRowProps>;
   Body: FC<IBodyProps>;
-  Footer: ReactNode;
+  Footer: FC<IFooterProps>;
 } = ({ columns, children }) => {
   return (
     <TableContext.Provider value={{ columns }}>
@@ -125,13 +123,20 @@ const Row: FC<IRowProps> = ({ children }) => {
 };
 
 interface IBodyProps {
-  data: ICabin[];
-  render: (cabin: ICabin) => JSX.Element;
+  data: any[];
+  render: (props: any) => JSX.Element;
 }
 const Body: FC<IBodyProps> = ({ data, render }) => {
   if (!data.length) return <Empty>No data at the moment</Empty>;
 
   return <StyledBody> {data.map(render)}</StyledBody>;
+};
+
+interface IFooterProps {
+  children: ReactNode;
+}
+const Footer: FC<IFooterProps> = ({ children }) => {
+  return <StyledFooter>{children}</StyledFooter>;
 };
 
 Table.Header = Header;

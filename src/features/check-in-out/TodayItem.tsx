@@ -6,8 +6,6 @@ import { Flag } from "../../ui/Flag";
 import Tag from "../../ui/Tag";
 import { IBooking } from "../../utils/schemas";
 import CheckoutButton from "./CheckoutButton";
-import { useCheckin } from "./useCheckin";
-import { useCheckout } from "./useCheckout";
 
 interface IStyledTodayItemProps {
   children: ReactNode;
@@ -27,7 +25,10 @@ const StyledTodayItem: FC<IStyledTodayItemProps> = styled.li`
   }
 `;
 
-const Guest: FC = styled.div`
+interface IGuest {
+  children: string;
+}
+const Guest: FC<IGuest> = styled.div`
   font-weight: 500;
 `;
 
@@ -43,7 +44,7 @@ const TodayItem: FC<ITodayItemProps> = ({ activity }) => {
       {status === "checked-in" && <Tag type="blue">Departing</Tag>}
 
       <Flag src={guests?.countryFlag} alt={`Flag of ${guests?.country}`} />
-      <Guest>{guests?.fullName}</Guest>
+      <Guest>{guests?.fullName ?? ""}</Guest>
       <div>{numNights} nights</div>
 
       {status === "unconfirmed" && (
@@ -51,7 +52,7 @@ const TodayItem: FC<ITodayItemProps> = ({ activity }) => {
           Check in
         </Button>
       )}
-      {status === "checked-in" && <CheckoutButton bookingId={id} />}
+      {status === "checked-in" && <CheckoutButton bookingId={id ?? ""} />}
     </StyledTodayItem>
   );
 };

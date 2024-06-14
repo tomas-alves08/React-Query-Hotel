@@ -1,12 +1,10 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import ButtonIcon from "./ButtonIcon";
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi2";
 import { useDarkMode } from "../contexts/DarkModeContext";
 
 const DarkModeToggle: FC = () => {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-
-  console.log(isDarkMode);
 
   return (
     <ButtonIcon onClick={toggleDarkMode}>

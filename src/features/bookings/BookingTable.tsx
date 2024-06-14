@@ -10,12 +10,12 @@ import Pagination from "../../ui/Pagination";
 
 const BookingTable = () => {
   const { bookings, isLoading: isLoadingBookings, count } = useBookings();
-  const { cabins, isLoading: isLoadingCabins } = useCabins();
+  const { isLoading: isLoadingCabins } = useCabins();
 
   // const cabin = cabins?.find(cabin=>cabin.id === )
 
   if (isLoadingBookings || isLoadingCabins) return <Spinner />;
-  if (!bookings.length) return <Empty resource="bookings" />;
+  if (!bookings?.length) return <Empty resource="bookings" />;
 
   return (
     <Menus>

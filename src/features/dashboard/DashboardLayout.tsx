@@ -22,11 +22,11 @@ const StyledDashboardLayout: FC<IStyledDashboardLayoutProps> = styled.div`
 const DashboardLayout: FC = () => {
   const { bookings, isLoading: isLoadingBookings } = useRecentBookings();
   const {
-    stays,
     confirmedStays,
     isLoading: isLoadingStays,
     numDays,
   } = useRecentStays();
+
   const { cabins, isLoading: isLoadingCabins } = useCabins();
 
   if (isLoadingBookings || isLoadingStays || isLoadingCabins)

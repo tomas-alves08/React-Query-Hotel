@@ -7,6 +7,14 @@ export interface IGuests {
   nationality?: string;
 }
 
+export interface IStatus {
+  unconfirmed: string;
+  "checked-in": string;
+  "checked-out": string;
+}
+
+export type StatusType = "unconfirmed" | "checked-in" | "checked-out";
+
 export interface IBooking {
   id?: string;
   cabinId?: number;
@@ -24,7 +32,7 @@ export interface IBooking {
   isPaid?: boolean;
   guests?: IGuests;
   cabins?: { name: string };
-  status?: string;
+  status?: "unconfirmed" | "checked-in" | "checked-out";
 }
 
 export interface IStartData {
@@ -46,18 +54,9 @@ export interface IColor {
   background: string;
 }
 
-// interface IImage {
-//   lastModified: string;
-//   lastModifiedDate: Date;
-//   name: string;
-//   size: number;
-//   type: string;
-//   webkitRelativePath: string;
-// }
-
 export interface ICabin {
   id?: number;
-  created_at: string;
+  created_at?: string;
   name: string;
   maxCapacity: number;
   regularPrice: number;

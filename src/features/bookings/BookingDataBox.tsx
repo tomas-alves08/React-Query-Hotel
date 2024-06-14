@@ -11,10 +11,13 @@ import DataItem from "../../ui/DataItem";
 import { Flag } from "../../ui/Flag";
 
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { IBooking } from "../../utils/schemas";
 
-const StyledBookingDataBox: FC = styled.section`
+interface IStyledBookingDataBoxProps {
+  children: ReactNode;
+}
+const StyledBookingDataBox: FC<IStyledBookingDataBoxProps> = styled.section`
   /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
@@ -23,7 +26,10 @@ const StyledBookingDataBox: FC = styled.section`
   overflow: hidden;
 `;
 
-const Header: FC = styled.header`
+interface IHeaderProps {
+  children: ReactNode;
+}
+const Header: FC<IHeaderProps> = styled.header`
   background-color: var(--color-brand-500);
   padding: 2rem 4rem;
   color: #e0e7ff;
@@ -53,11 +59,17 @@ const Header: FC = styled.header`
   }
 `;
 
-const Section: FC = styled.section`
+interface ISectionProps {
+  children: ReactNode;
+}
+const Section: FC<ISectionProps> = styled.section`
   padding: 3.2rem 4rem 1.2rem;
 `;
 
-const Guest: FC = styled.div`
+interface IGuestProps {
+  children: ReactNode;
+}
+const Guest: FC<IGuestProps> = styled.div`
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -70,7 +82,11 @@ const Guest: FC = styled.div`
   }
 `;
 
-const Price: FC = styled.div`
+interface IPriceProps {
+  isPaid: boolean;
+  children: ReactNode;
+}
+const Price: FC<IPriceProps> = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -121,9 +137,11 @@ const BookingDataBox: FC<IBookingDataBoxProps> = ({ booking }) => {
     hasBreakfast,
     observations,
     isPaid,
-    guests: { fullName: guestName, email, country, countryFlag, nationalID },
-    cabins: { name: cabinName },
+    guests,
+    cabins,
   } = booking;
+
+  console.table(booking);
 
   return (
     <StyledBookingDataBox>
@@ -131,30 +149,38 @@ const BookingDataBox: FC<IBookingDataBoxProps> = ({ booking }) => {
         <div>
           <HiOutlineHomeModern />
           <p>
-            {numNights} nights in Cabin <span>{cabinName}</span>
+            {numNights} nights in Cabin <span>{cabins?.name}</span>
           </p>
         </div>
 
         <p>
-          {format(new Date(startDate), "EEE, MMM dd yyyy")} (
-          {isToday(new Date(startDate))
+          {format(new Date(startDate ?? ""), "EEE, MMM dd yyyy")} (
+          {isToday(new Date(startDate ?? ""))
             ? "Today"
-            : formatDistanceFromNow(startDate)}
-          ) &mdash; {format(new Date(endDate), "EEE, MMM dd yyyy")}
+            : formatDistanceFromNow(startDate ?? "")}
+          ) &mdash; {format(new Date(endDate ?? ""), "EEE, MMM dd yyyy")}
         </p>
       </Header>
 
       <Section>
-        <Guest>
-          {countryFlag && <Flag src={countryFlag} alt={`Flag of ${country}`} />}
-          <p>
-            {guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
-          </p>
-          <span>&bull;</span>
-          <p>{email}</p>
-          <span>&bull;</span>
-          <p>National ID {nationalID}</p>
-        </Guest>
+        {booking.guests && numGuests && (
+          <Guest>
+            {guests?.countryFlag && (
+              <Flag
+                src={guests?.countryFlag}
+                alt={`Flag of ${guests?.country}`}
+              />
+            )}
+            <p>
+              {guests?.fullName}{" "}
+              {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
+            </p>
+            <span>&bull;</span>
+            <p>{guests?.email}</p>
+            <span>&bull;</span>
+            <p>National ID {guests?.nationalID}</p>
+          </Guest>
+        )}
 
         {observations && (
           <DataItem
@@ -169,13 +195,13 @@ const BookingDataBox: FC<IBookingDataBoxProps> = ({ booking }) => {
           {hasBreakfast ? "Yes" : "No"}
         </DataItem>
 
-        <Price isPaid={isPaid}>
+        <Price isPaid={isPaid ?? false}>
           <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
-            {formatCurrency(totalPrice)}
+            {formatCurrency(Number(totalPrice))}
 
             {hasBreakfast &&
-              ` (${formatCurrency(cabinPrice)} cabin + ${formatCurrency(
-                extrasPrice
+              ` (${formatCurrency(Number(cabinPrice))} cabin + ${formatCurrency(
+                Number(extrasPrice)
               )} breakfast)`}
           </DataItem>
 
@@ -184,7 +210,9 @@ const BookingDataBox: FC<IBookingDataBoxProps> = ({ booking }) => {
       </Section>
 
       <Footer>
-        <p>Booked {format(new Date(created_at), "EEE, MMM dd yyyy, p")}</p>
+        <p>
+          Booked {format(new Date(created_at ?? ""), "EEE, MMM dd yyyy, p")}
+        </p>
       </Footer>
     </StyledBookingDataBox>
   );

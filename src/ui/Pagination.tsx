@@ -12,15 +12,6 @@ const StyledPagination = styled.div`
   justify-content: space-between;
 `;
 
-const P = styled.p`
-  font-size: 1.4rem;
-  margin-left: 0.8rem;
-
-  & span {
-    font-weight: 600;
-  }
-`;
-
 interface IButtonsProps {
   children: ReactNode;
 }
@@ -31,14 +22,10 @@ const Buttons: FC<IButtonsProps> = styled.div`
 
 interface IPaginationButtonProps {
   children: ReactNode;
-  active: boolean;
   onClick: () => void;
   disabled: boolean;
 }
 const PaginationButton: FC<IPaginationButtonProps> = styled.button`
-  background-color: ${(props) =>
-    props.active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
-  color: ${(props) => (props.active ? " var(--color-brand-50)" : "inherit")};
   border: none;
   border-radius: var(--border-radius-sm);
   font-weight: 500;
@@ -73,7 +60,6 @@ const PaginationButton: FC<IPaginationButtonProps> = styled.button`
 interface IPaginationProps {
   count: number;
 }
-
 const Pagination: FC<IPaginationProps> = ({ count }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = !searchParams.get("page")
@@ -109,16 +95,11 @@ const Pagination: FC<IPaginationProps> = ({ count }) => {
       </p>
 
       <Buttons>
-        <PaginationButton
-          onClick={previousPage}
-          // active={true}
-          disabled={currentPage === 1}
-        >
+        <PaginationButton onClick={previousPage} disabled={currentPage === 1}>
           <HiChevronLeft /> <span>Previous</span>
         </PaginationButton>
         <PaginationButton
           onClick={nextPage}
-          // active={false}
           disabled={currentPage === pageCount}
         >
           <span>Next</span>

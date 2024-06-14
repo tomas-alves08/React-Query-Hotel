@@ -154,7 +154,7 @@ const CreateCabinForm: FC<ICreateCabinFormProps> = ({
         />
       </FormRow>
 
-      <FormRow label="Cabin photo" error={errors?.image?.message || ""}>
+      <FormRow label="Cabin photo" error={errors?.image?.message?.toString()}>
         <FileInput
           id="image"
           accept="image/*"

@@ -127,7 +127,7 @@ const startDataDark: IStartData[] = [
 const prepareData = (startData: IStartData[], stays: IBooking[] | null) => {
   // A bit ugly code, but sometimes this is what it takes when working with real data 😅
 
-  function incArrayValue(arr, field) {
+  function incArrayValue(arr: IStartData[], field: string) {
     return arr.map((obj) =>
       obj.duration === field ? { ...obj, value: obj.value + 1 } : obj
     );
@@ -141,11 +141,13 @@ const prepareData = (startData: IStartData[], stays: IBooking[] | null) => {
       if (num === 1) return incArrayValue(arr, "1 night");
       if (num === 2) return incArrayValue(arr, "2 nights");
       if (num === 3) return incArrayValue(arr, "3 nights");
-      if ([4, 5].includes(num)) return incArrayValue(arr, "4-5 nights");
-      if ([6, 7].includes(num)) return incArrayValue(arr, "6-7 nights");
-      if (num >= 8 && num <= 14) return incArrayValue(arr, "8-14 nights");
-      if (num >= 15 && num <= 21) return incArrayValue(arr, "15-21 nights");
-      if (num >= 21) return incArrayValue(arr, "21+ nights");
+      if ([4, 5].includes(num ?? 0)) return incArrayValue(arr, "4-5 nights");
+      if ([6, 7].includes(num ?? 0)) return incArrayValue(arr, "6-7 nights");
+      if ((num ?? 0) >= 8 && (num ?? 0) <= 14)
+        return incArrayValue(arr, "8-14 nights");
+      if ((num ?? 0) >= 15 && (num ?? 0) <= 21)
+        return incArrayValue(arr, "15-21 nights");
+      if ((num ?? 0) >= 21) return incArrayValue(arr, "21+ nights");
       return arr;
     }, startData)
     .filter((obj) => obj.value > 0);
@@ -167,7 +169,6 @@ const CustomLegend = ({ payload }: any) => {
       }}
     >
       {payload.map((entry: any, index: number) => {
-        console.log(entry);
         return (
           <li
             key={`item-${index}`}
@@ -208,7 +209,6 @@ const CustomTooltip = ({ payload }: any) => {
       }}
     >
       {payload.map((entry: any, index: number) => {
-        console.log(entry);
         return (
           <li
             key={`item-${index}`}

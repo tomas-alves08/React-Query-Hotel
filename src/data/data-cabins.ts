@@ -1,9 +1,9 @@
 import { supabaseUrl } from "../services/supabase";
-import { ICabins } from "../utils/schemas";
+import { ICabin } from "../utils/schemas";
 
 const imageUrl = `${supabaseUrl}/storage/v1/object/public/cabin-images/`;
 
-export const cabins: ICabins[] = [
+export const cabins: ICabin[] = [
   {
     name: "001",
     maxCapacity: 2,

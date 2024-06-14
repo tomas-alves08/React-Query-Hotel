@@ -1,7 +1,7 @@
 import { add } from "date-fns";
 import { IBooking } from "../utils/schemas";
 
-function fromToday(numDays, withTime = false) {
+function fromToday(numDays: number, withTime = false) {
   const date = add(new Date(), { days: numDays });
   if (!withTime) date.setUTCHours(0, 0, 0, 0);
   return date.toISOString().slice(0, -1);

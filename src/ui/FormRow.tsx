@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FC, ReactNode } from "react";
+import { FieldError } from "react-hook-form";
 import styled from "styled-components";
 
 interface IStyledFormRowProps {
@@ -43,7 +44,7 @@ const Label: FC<ILabelProps> = styled.label`
 `;
 
 interface IError {
-  children: string;
+  children: string | FieldError;
 }
 
 const Error: FC<IError> = styled.span`
@@ -54,9 +55,8 @@ const Error: FC<IError> = styled.span`
 interface IFormRowProps {
   children: ReactNode;
   label?: string;
-  error?: string;
+  error?: string | FieldError;
 }
-
 const FormRow: FC<IFormRowProps> = ({ children, label, error }) => {
   let childId = null;
   if (React.isValidElement(children)) {

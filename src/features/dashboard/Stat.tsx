@@ -1,7 +1,10 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, ReactNode } from "react";
 import styled from "styled-components";
 
-const StyledStat: FC = styled.div`
+interface IStyledStat {
+  children: ReactNode;
+}
+const StyledStat: FC<IStyledStat> = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
@@ -15,7 +18,11 @@ const StyledStat: FC = styled.div`
   row-gap: 0.4rem;
 `;
 
-const Icon: FC = styled.div`
+interface IIcon {
+  children: ReactNode;
+  color: string;
+}
+const Icon: FC<IIcon> = styled.div`
   grid-row: 1 / -1;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -33,7 +40,10 @@ const Icon: FC = styled.div`
   }
 `;
 
-const Title: FC = styled.h5`
+interface ITitle {
+  children: ReactNode;
+}
+const Title: FC<ITitle> = styled.h5`
   align-self: end;
   font-size: 1.2rem;
   text-transform: uppercase;
@@ -42,7 +52,10 @@ const Title: FC = styled.h5`
   color: var(--color-grey-500);
 `;
 
-const Value: FC = styled.p`
+interface IValue {
+  children: ReactNode;
+}
+const Value: FC<IValue> = styled.p`
   font-size: 2.4rem;
   line-height: 1;
   font-weight: 500;

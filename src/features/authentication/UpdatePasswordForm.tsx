@@ -22,7 +22,7 @@ const UpdatePasswordForm: FC = () => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow
         label="New Password (min 8 chars)"
-        error={errors?.password?.message}
+        error={errors?.password?.message?.toString()}
       >
         <Input
           type="password"
@@ -41,7 +41,7 @@ const UpdatePasswordForm: FC = () => {
 
       <FormRow
         label="Confirm password"
-        error={errors?.passwordConfirm?.message}
+        error={errors?.passwordConfirm?.message?.toString()}
       >
         <Input
           type="password"

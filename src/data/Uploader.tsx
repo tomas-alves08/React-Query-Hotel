@@ -7,6 +7,7 @@ import { subtractDates } from "../utils/helpers";
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
+import { IBooking } from "../utils/schemas";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -46,17 +47,29 @@ async function createBookings() {
     .from("guests")
     .select("id")
     .order("id");
+
+  if (!guestsIds) return;
+
   const allGuestIds = guestsIds.map((cabin) => cabin.id);
   const { data: cabinsIds } = await supabase
     .from("cabins")
     .select("id")
     .order("id");
+
+  if (!cabinsIds) return;
+
   const allCabinIds = cabinsIds.map((cabin) => cabin.id);
 
-  const finalBookings = bookings.map((booking) => {
+  const finalBookings = bookings.map((booking: IBooking) => {
+    if (!booking.cabinId || !booking.numGuests || !booking.guestId) return;
+
     // Here relying on the order of cabins, as they don't have and ID yet
     const cabin = cabins.at(booking.cabinId - 1);
-    const numNights = subtractDates(booking.endDate, booking.startDate);
+    if (!cabin) return;
+    const numNights = subtractDates(
+      booking.endDate ?? "",
+      booking.startDate ?? ""
+    );
     const cabinPrice = numNights * (cabin.regularPrice - cabin.discount);
     const extrasPrice = booking.hasBreakfast
       ? numNights * 15 * booking.numGuests
@@ -65,20 +78,20 @@ async function createBookings() {
 
     let status;
     if (
-      isPast(new Date(booking.endDate)) &&
-      !isToday(new Date(booking.endDate))
+      isPast(new Date(booking.endDate ?? "")) &&
+      !isToday(new Date(booking.endDate ?? ""))
     )
       status = "checked-out";
     if (
-      isFuture(new Date(booking.startDate)) ||
-      isToday(new Date(booking.startDate))
+      isFuture(new Date(booking.startDate ?? "")) ||
+      isToday(new Date(booking.startDate ?? ""))
     )
       status = "unconfirmed";
     if (
-      (isFuture(new Date(booking.endDate)) ||
-        isToday(new Date(booking.endDate))) &&
-      isPast(new Date(booking.startDate)) &&
-      !isToday(new Date(booking.startDate))
+      (isFuture(new Date(booking.endDate ?? "")) ||
+        isToday(new Date(booking.endDate ?? ""))) &&
+      isPast(new Date(booking.startDate ?? "")) &&
+      !isToday(new Date(booking.startDate ?? ""))
     )
       status = "checked-in";
 
@@ -93,8 +106,6 @@ async function createBookings() {
       status,
     };
   });
-
-  console.log(finalBookings);
 
   const { error } = await supabase.from("bookings").insert(finalBookings);
   if (error) console.log(error.message);

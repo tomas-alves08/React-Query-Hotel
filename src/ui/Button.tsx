@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, ReactNode } from "react";
+import { ElementType, FC, MouseEventHandler, ReactNode } from "react";
 import styled, { css } from "styled-components";
 
 const sizes = {
@@ -64,8 +64,10 @@ interface IButtonProps {
   children: ReactNode;
   onClick?: Function | MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
+  as?: ElementType;
+  to?: string;
+  type?: string;
 }
-
 const Button: FC<IButtonProps> = styled.button`
   border: none;
   border-radius: var(--border-radius-small);
@@ -74,52 +76,5 @@ const Button: FC<IButtonProps> = styled.button`
   ${(props) => sizes[props.size || "medium"]}
   ${(props) => variation[props.variation || "primary"]}
 `;
-
-// interface IButtonProps {
-//   onClick?: Function | MouseEventHandler<HTMLButtonElement>;
-//   disabled?: boolean;
-//   children: ReactNode;
-// }
-// const Button: FC<IButtonProps> = ({ children, onClick, disabled }) => {
-//   console.log("BUTTON!");
-//   return (
-//     <ButtonStyled onClick={onClick} disabled={disabled}>
-//       {children}
-//     </ButtonStyled>
-//   );
-// };
-
-// Use transient props ($size, $variation)
-// const StyledButton = styled.button<{
-//   $size: keyof typeof sizes;
-//   $variation: keyof typeof variations;
-// }>`
-//   border: none;
-//   border-radius: var(--border-radius-small);
-//   box-shadow: var(--shadow-sm);
-//   cursor: pointer;
-
-//   ${(props) => sizes[props.$size]}
-//   ${(props) => variations[props.$variation]}
-// `;
-
-// const Button: FC<IButtonProps> = ({
-//   size = "medium",
-//   variation = "primary",
-//   children,
-//   disabled = false,
-//   onClick = () => {},
-// }) => {
-//   return (
-//     <StyledButton
-//       $size={size}
-//       $variation={variation}
-//       onClick={onClick}
-//       disabled={disabled}
-//     >
-//       {children}
-//     </StyledButton>
-//   );
-// };
 
 export default Button;

@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
@@ -27,39 +27,54 @@ const LoginForm: FC = () => {
     );
   }
 
+  function handleDemo() {
+    login({ email: "test-user@user.com", password: "11111111" });
+  }
+
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormRowVertical label="Email address">
-        <Input
-          type="email"
-          id="email"
-          // This makes this form better for password managers
-          autoComplete="username"
-          value={email}
-          onChange={(e: FormEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
-          }
-          disabled={isLoading}
-        />
-      </FormRowVertical>
-      <FormRowVertical label="Password">
-        <Input
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e: FormEvent<HTMLInputElement>) =>
-            setPassword(e.target.value)
-          }
-          disabled={isLoading}
-        />
-      </FormRowVertical>
-      <FormRowVertical>
-        <Button size="large" disabled={isLoading}>
-          {!isLoading ? "Login" : <SpinnerMini />}
-        </Button>
-      </FormRowVertical>
-    </Form>
+    <>
+      <Form onSubmit={handleSubmit}>
+        <FormRowVertical label="Email address">
+          <Input
+            type="email"
+            id="email"
+            // This makes this form better for password managers
+            autoComplete="username"
+            value={email}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
+            disabled={isLoading}
+          />
+        </FormRowVertical>
+        <FormRowVertical label="Password">
+          <Input
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
+            disabled={isLoading}
+          />
+        </FormRowVertical>
+        <FormRowVertical>
+          <Button size="large" disabled={isLoading}>
+            {!isLoading ? "Login" : <SpinnerMini />}
+          </Button>
+        </FormRowVertical>
+        <div className="demo-button-container">
+          <button
+            className="demo-button"
+            disabled={isLoading}
+            onClick={handleDemo}
+          >
+            Demo Application
+          </button>
+        </div>
+      </Form>
+    </>
   );
 };
 

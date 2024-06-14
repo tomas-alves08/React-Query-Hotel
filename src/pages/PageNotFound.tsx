@@ -1,10 +1,14 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import styled from "styled-components";
 
 import { useMoveBack } from "../hooks/useMoveBack";
+import Button from "../ui/Button";
 import Heading from "../ui/Heading";
 
-const StyledPageNotFound: FC = styled.main`
+interface IStyledPageNotFoundProps {
+  children: ReactNode;
+}
+const StyledPageNotFound: FC<IStyledPageNotFoundProps> = styled.main`
   height: 100vh;
   background-color: var(--color-grey-50);
   display: flex;
@@ -13,7 +17,10 @@ const StyledPageNotFound: FC = styled.main`
   padding: 4.8rem;
 `;
 
-const Box: FC = styled.div`
+interface IBoxProps {
+  children: ReactNode;
+}
+const Box: FC<IBoxProps> = styled.div`
   /* box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
@@ -37,9 +44,9 @@ const PageNotFound: FC = () => {
         <Heading as="h1">
           The page you are looking for could not be found 😢
         </Heading>
-        <button onClick={moveBack} size="large">
+        <Button onClick={moveBack} size="large">
           &larr; Go back
-        </button>
+        </Button>
       </Box>
     </StyledPageNotFound>
   );

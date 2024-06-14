@@ -1,8 +1,7 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 import Button from "./Button";
 import Heading from "./Heading";
-import { ModalContext } from "./Modal";
 
 const StyledConfirmDelete = styled.div`
   width: 40rem;
@@ -39,7 +38,6 @@ const ConfirmDelete: FC<IConfirmDeleteProps> = ({
     if (onCloseModal) onCloseModal();
   }
 
-  console.log("ON COMFIRM!");
   return (
     <StyledConfirmDelete>
       <Heading as="h3">Delete {resourceName}</Heading>

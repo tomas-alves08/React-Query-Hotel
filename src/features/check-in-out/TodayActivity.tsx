@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import styled from "styled-components";
 
 import Heading from "../../ui/Heading";
@@ -8,7 +8,10 @@ import TodayItem from "./TodayItem";
 
 import { useTodayActivity } from "./useTodayActivity";
 
-const StyledToday: FC = styled.div`
+interface IStyledToday {
+  children: ReactNode;
+}
+const StyledToday: FC<IStyledToday> = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
@@ -22,7 +25,10 @@ const StyledToday: FC = styled.div`
   padding-top: 2.4rem;
 `;
 
-const TodayList: FC = styled.ul`
+interface ITodayList {
+  children: ReactNode;
+}
+const TodayList: FC<ITodayList> = styled.ul`
   overflow: scroll;
   overflow-x: hidden;
 

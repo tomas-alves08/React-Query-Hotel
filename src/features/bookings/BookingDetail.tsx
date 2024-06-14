@@ -9,7 +9,7 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { useBooking } from "./useBooking";
 import Spinner from "../../ui/Spinner";
 import {
@@ -20,8 +20,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../check-in-out/useCheckout";
 import { useDeleteBooking } from "./useDeleteBooking";
+import Empty from "../../ui/Empty";
+import { IBooking, IStatus } from "../../utils/schemas";
 
-const HeadingGroup: FC = styled.div`
+interface IHeadingGroup {
+  children: ReactNode;
+}
+const HeadingGroup: FC<IHeadingGroup> = styled.div`
   display: flex;
   gap: 2.4rem;
   align-items: center;
@@ -32,13 +37,15 @@ const BookingDetail: FC = () => {
   const { booking, isLoading } = useBooking();
   const { checkout, isCheckingOut } = useCheckout();
   const { removeBooking, isDeleting } = useDeleteBooking();
-  const { status } = booking ?? { status: "" };
 
   const moveBack = useMoveBack();
 
   if (isLoading) return <Spinner />;
+  if (!booking) return <Empty resource="booking" />;
 
-  const statusToTagName = {
+  const status = (booking.status as IBooking["status"]) ?? "unconfirmed";
+
+  const statusToTagName: IStatus = {
     unconfirmed: "blue",
     "checked-in": "green",
     "checked-out": "silver",
@@ -58,7 +65,7 @@ const BookingDetail: FC = () => {
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
-      <BookingDataBox booking={booking} />
+      <BookingDataBox booking={booking as IBooking} />
 
       <ButtonGroup>
         {booking.status === "unconfirmed" && (

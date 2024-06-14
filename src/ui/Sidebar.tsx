@@ -1,7 +1,6 @@
 import { FC } from "react";
 import styled from "styled-components";
 import Uploader from "../data/Uploader";
-import { useCabins } from "../pages/useCabins";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 
@@ -17,8 +16,6 @@ const StyledSidebar = styled.aside`
 `;
 
 const Sidebar: FC = () => {
-  const { isLoading, cabins } = useCabins();
-  // console.log(cabins);
   return (
     <StyledSidebar>
       <Logo />
